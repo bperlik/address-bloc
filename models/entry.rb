@@ -3,13 +3,8 @@ require 'bloc_record/base'
 class Entry < BlocRecord::Base
   # no longer needed, using inheritance
   # These must be accessors since we mutate them
-#  attr_accessor :name, :phone_number, :email
-
-#  def initialize(name, phone_number, email)
-#    @name = name
-#    @phone_number = phone_number
-#    @email = email
-#  end
+  #  attr_accessor :name, :phone_number, :email
+  belongs_to :address_book
 
   def to_s
     "Name: #{name}\nPhone Number: #{phone_number}\nEmail: #{email}"

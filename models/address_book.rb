@@ -3,15 +3,14 @@ require 'csv'
 require 'bloc_record/base'
 
 class AddressBook < BlocRecord::Base
-  attr_reader :entries
-
- # no longer needed, instance vars from db table
-  # def initialize
-  #  @entries = []
-  # end
+  has_many :entries
 
   def add_entry(name, phone, email)
     Entry.create(name: name, phone_number: phone, email: email, address_book_id: self.id)
+  end
+
+  def find_entry(name)
+    Entry.where(name: name, address_book_id: self.id).first
   end
 
   def import_from_csv(file_name)
@@ -23,27 +22,4 @@ class AddressBook < BlocRecord::Base
       add_entry(row_hash["name"], row_hash["phone_number"], row_hash["email"])
     end
   end
-
-# removed per bloc module 5 ORM chkpt 3
-# searching now handled by SQLite so its no longer needed
-# Search AddressBook for a specific entry by name
-#  def binary_search(name)
-#    lower = 0
-#    upper = entries.length - 1
-#
-#    while lower <= upper
-#      mid = (lower + upper) / 2
-#      mid_name = entries[mid].name
-#
-#      if name == mid_name
-#        return entries[mid]
-#      elsif name < mid_name
-#        upper = mid - 1
-#      elsif name > mid_name
-#        lower = mid + 1
-#      end
-#    end
-#
-#    return nil
-#  end
 end
